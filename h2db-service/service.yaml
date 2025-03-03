@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: h2db-service
+spec:
+  type: ClusterIP
+  selector:
+    app: h2db-service
+  ports:
+    - protocol: TCP
+      port: 9092
+      targetPort: 9092
+      name: jdbc  # Name for JDBC port
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+      name: web-console  # Name for H2 Web Console
+

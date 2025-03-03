@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: h2db-service
+  labels:
+    db: h2db-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: h2db-service
+  template:
+    metadata:
+      labels:
+        app: h2db-service
+    spec:
+      containers:
+        - name: h2db-service
+          image: oscarfonts/h2
+          ports:
+            - containerPort: 9092
+            - containerPort: 8082
+          env:
+            - name: H2_OPTIONS
+              value: "-tcp -tcpAllowOthers -tcpPort 9092 -webPort 8082 -ifNotExists -webAllowOthers"
+          volumeMounts:
+            - name: h2-data
+              mountPath: /opt/h2-data
+          readinessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: h2-data
+          persistentVolumeClaim:
+            claimName: h2-pvc
