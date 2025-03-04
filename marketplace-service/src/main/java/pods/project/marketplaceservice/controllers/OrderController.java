@@ -65,6 +65,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
+    @Transactional
     public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> request){
         return orderService.createOrder(request);
     }

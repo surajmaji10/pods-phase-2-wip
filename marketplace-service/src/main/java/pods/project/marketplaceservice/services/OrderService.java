@@ -1,7 +1,7 @@
 package pods.project.marketplaceservice.services;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.env.Environment;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.transaction.annotation.Propagation;
 import pods.project.marketplaceservice.entities.Order;
 import pods.project.marketplaceservice.entities.OrderItem;
 import pods.project.marketplaceservice.entities.Product;
@@ -21,6 +23,7 @@ import pods.project.marketplaceservice.repositories.OrderRepository;
 import pods.project.marketplaceservice.repositories.ProductsRepository;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Component
 @Service
@@ -128,115 +131,293 @@ public class OrderService {
         return  ResponseEntity.ok().body(map);
     }
 
-    @Transactional
+    private final ReentrantLock lock = new ReentrantLock(true);
+
+    // @Transactional
     public ResponseEntity<?> createOrder(Map<String, Object> request) {
 
-        Integer user_id = Integer.parseInt(request.get("user_id").toString());
-        System.out.println("USER ID: " + user_id);
-        boolean userExists = getUserById(user_id, false);
-        if(!userExists){
-            System.out.println("NOT HERE");
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userNotFound(user_id));
-        }
+       lock.lock();
 
-        List<Map<String, Object>> itemsList = (List<Map<String, Object>>) request.get("items");
-        Map<Integer, Integer> productQuantityMap = new HashMap<>();
-        for (Map<String, Object> item : itemsList) {
-            Integer productId = Integer.parseInt(item.get("product_id").toString());
-            Integer quantity = Integer.parseInt(item.get("quantity").toString());
-            productQuantityMap.put(productId, quantity);
-        }
-
-        List<Map<String, Integer>>  productsQuantityList = new ArrayList<>();
-
-        Order order = new Order();
-        List<OrderItem> orderItems = new ArrayList<>();
-        Integer totalPrice = 0;
-
-        for(Map.Entry<Integer, Integer> entry : productQuantityMap.entrySet()){
-            Integer id = entry.getKey();
-            Integer quantity = entry.getValue();
-            List<Product> products = productsRepository.findProductByIdIs(id);
-            if(products.isEmpty()){
-                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productNotFound(id, false, -1, -1));
+        try{
+            Integer user_id = Integer.parseInt(request.get("user_id").toString());
+            System.out.println("USER ID: " + user_id);
+    
+            boolean userExists = getUserById(user_id, false);
+            if(!userExists){
+                System.out.println("NOT HERE");
+                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userNotFound(user_id));
             }
-            Integer quantityLeft = products.get(0).getStock_quantity();
-            if(quantityLeft < quantity){
-                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productNotFound(id, true, quantity, quantityLeft));
+    
+            List<Map<String, Object>> itemsList = (List<Map<String, Object>>) request.get("items");
+            Map<Integer, Integer> productQuantityMap = new HashMap<>();
+            for (Map<String, Object> item : itemsList) {
+                Integer productId = Integer.parseInt(item.get("product_id").toString());
+                Integer quantity = Integer.parseInt(item.get("quantity").toString());
+                productQuantityMap.put(productId, quantity);
             }
-            Integer productPrice = products.get(0).getPrice();
+    
+            List<Map<String, Integer>>  productsQuantityList = new ArrayList<>();
+    
+            Order order = new Order();
+            List<OrderItem> orderItems = new ArrayList<>();
+            Integer totalPrice = 0;
+    
+            for(Map.Entry<Integer, Integer> entry : productQuantityMap.entrySet()){
+                Integer id = entry.getKey();
+                Integer quantity = entry.getValue();
+                List<Product> products = productsRepository.findProductByIdIs(id);
+                if(products.isEmpty()){
+                    return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productNotFound(id, false, -1, -1));
+                }
+                Integer quantityLeft = products.get(0).getStock_quantity();
+                if(quantityLeft < quantity){
+                    return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productNotFound(id, true, quantity, quantityLeft));
+                }
+                Integer productPrice = products.get(0).getPrice();
+    
+                OrderItem orderItem = new OrderItem();
+                orderItem.setQuantity(quantity);
+                orderItem.setProduct_id(id);
+                orderItem.setOrder_id(order);
+    
+                orderItems.add(orderItem);
+    
+                totalPrice += productPrice * quantity;
+    
+                Map<String, Integer> productUpdated = new HashMap<>();
+                productUpdated.put("product_id", id);
+                productUpdated.put("quantity", quantityLeft - quantity);
+    
+                productsQuantityList.add(productUpdated);
+    
+            }
+    
+            // get discount availability
+            boolean discountAvailed = getUserById(user_id, true);
+            if(!discountAvailed){
+                totalPrice = totalPrice - (int)(totalPrice * 0.10);
+            }
+    
+            // check if user has sufficient balance
+            Integer balance = getUserBalanceById(user_id);
+            if(balance == -1){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id=" + user_id + " has NO wallet. Please create wallet first.");
+            }
+            if(balance < totalPrice){
+                return   ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userInsufficientFunds(user_id, totalPrice, balance));
+            }
+    
+    
+            System.out.println("NEW BAL is " + (totalPrice));
+           
+            // order can be placed
+            order.setItems(orderItems);
+            order.setStatus("PLACED");
+            order.setUser_id(user_id);
+            order.setTotal_price(totalPrice);
+    
+            Order savedOrder = orderRepository.save(order);
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setQuantity(quantity);
-            orderItem.setProduct_id(id);
-            orderItem.setOrder_id(order);
+            // update user's wallet
+            boolean updatedWallet = updateWallet(user_id, totalPrice, "debit");
+            if(!updatedWallet){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wallet NOT Updated");
+            }
+    
+            // update the user too
+            boolean userUpdated =  updateUser(user_id, true);
+            if(!userUpdated){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User NOT Updated");
+            }
+    
+            // update the products
+            boolean updatedProducts =  updateProducts(savedOrder.getId(), productsQuantityList);
+            if(!updatedProducts){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Products NOT Updated");
+            }
+    
+            if(updatedWallet && userUpdated && updatedProducts){
+                Map<String,Object> map = new HashMap<>();
+                map.put("order_id", savedOrder.getId());
+                map.put("user_id", user_id);
+                map.put("total_price", totalPrice);
+                map.put("status", "PLACED");
+                map.put("items", flattenOrderItems(orderItems));
+                System.out.printf(map.toString());
+                return ResponseEntity.status(HttpStatus.CREATED).body(map);
+            }
+            assert(savedOrder != null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order NOT Placed");
 
-            orderItems.add(orderItem);
-
-            totalPrice += productPrice * quantity;
-
-            Map<String, Integer> productUpdated = new HashMap<>();
-            productUpdated.put("product_id", id);
-            productUpdated.put("quantity", quantityLeft - quantity);
-
-            productsQuantityList.add(productUpdated);
-
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
-
-        // get discount availability
-        boolean discountAvailed = getUserById(user_id, true);
-        if(!discountAvailed){
-            totalPrice = totalPrice - (int)(totalPrice * 0.10);
+        finally {
+            lock.unlock();
         }
-
-        // check if user has sufficient balance
-        Integer balance = getUserBalanceById(user_id);
-        if(balance == -1){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id=" + user_id + " has NO wallet. Please create wallet first.");
-        }
-        if(balance < totalPrice){
-            return   ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userInsufficientFunds(user_id, totalPrice, balance));
-        }
-
-        // update user's wallet
-        System.out.println("NEW BAL is " + (totalPrice));
-        boolean updatedWallet = updateWallet(user_id, totalPrice, "debit");
-        if(!updatedWallet){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wallet NOT Updated");
-        }
-
-        // order can be placed
-        order.setItems(orderItems);
-        order.setStatus("PLACED");
-        order.setUser_id(user_id);
-        order.setTotal_price(totalPrice);
-
-        Order savedOrder = orderRepository.save(order);
-
-        // update the user too
-        boolean userUpdated =  updateUser(user_id, true);
-        if(!userUpdated){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User NOT Updated");
-        }
-
-        boolean updatedProducts =  updateProducts(savedOrder.getId(), productsQuantityList);
-        if(!updatedProducts){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Products NOT Updated");
-        }
-
-        if(updatedWallet && userUpdated && updatedProducts){
-            Map<String,Object> map = new HashMap<>();
-            map.put("order_id", savedOrder.getId());
-            map.put("user_id", user_id);
-            map.put("total_price", totalPrice);
-            map.put("status", "PLACED");
-            map.put("items", flattenOrderItems(orderItems));
-            System.out.printf(map.toString());
-            return ResponseEntity.status(HttpStatus.CREATED).body(map);
-        }
-        assert(savedOrder != null);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order NOT Placed");
     }
+
+
+//     @Transactional(rollbackFor = Exception.class)  // Ensure rollback on failure
+//     public ResponseEntity<?> createOrder(Map<String, Object> request) {
+//     try {
+//         Integer userId = Integer.parseInt(request.get("user_id").toString());
+//         if (!getUserById(userId, false)) {
+//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userNotFound(userId));
+//         }
+
+//         // Extract items from request
+//         List<Map<String, Object>> itemsList = (List<Map<String, Object>>) request.get("items");
+//         Map<Integer, Integer> productQuantityMap = new HashMap<>();
+//         for (Map<String, Object> item : itemsList) {
+//             Integer productId = Integer.parseInt(item.get("product_id").toString());
+//             Integer quantity = Integer.parseInt(item.get("quantity").toString());
+//             productQuantityMap.put(productId, quantity);
+//         }
+
+//         // Fetch product details
+//         List<Product> products = productsRepository.findAllById(productQuantityMap.keySet());
+//         if (products.size() != productQuantityMap.size()) {
+//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("One or more products not found.");
+//         }
+
+//         int totalPrice = 0;
+//         List<OrderItem> orderItems = new ArrayList<>();
+//         Map<Integer, Integer> updatedStock = new HashMap<>();
+
+//         // Validate stock availability
+//         for (Product product : products) {
+//             Integer productId = product.getId();
+//             Integer requestedQty = productQuantityMap.get(productId);
+//             if (product.getStock_quantity() < requestedQty) {
+//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                         .body(productNotFound(productId, true, requestedQty, product.getStock_quantity()));
+//             }
+//             totalPrice += product.getPrice() * requestedQty;
+//             updatedStock.put(productId, product.getStock_quantity() - requestedQty);
+
+//             OrderItem orderItem = new OrderItem();
+//             orderItem.setQuantity(requestedQty);
+//             orderItem.setProduct_id(productId);
+//             orderItem.setOrder_id(null);  // Set after order creation
+//             orderItems.add(orderItem);
+//         }
+
+//         // Apply discount if applicable
+//         if (!getUserById(userId, true)) {
+//             totalPrice *= 0.90; // Apply 10% discount
+//         }
+
+//         // Check user balance
+//         Integer balance = getUserBalanceById(userId);
+//         if (balance == -1) {
+//             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                     .body("User with id=" + userId + " has NO wallet. Please create wallet first.");
+//         }
+//         if (balance < totalPrice) {
+//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userInsufficientFunds(userId, totalPrice, balance));
+//         }
+
+//         // Attempt wallet deduction with retry
+//         boolean walletUpdated = updateWalletOptimistically(userId, totalPrice);
+//         if (!walletUpdated) {
+//             throw new RuntimeException("Wallet update failed due to concurrent modification.");
+//         }
+
+//         // Create order
+//         Order order = new Order();
+//         order.setItems(orderItems);
+//         order.setStatus("PLACED");
+//         order.setUser_id(userId);
+//         order.setTotal_price(totalPrice);
+//         Order savedOrder = orderRepository.save(order);
+
+//         // Assign order ID to order items
+//         for (OrderItem item : orderItems) {
+//             item.setOrder_id(savedOrder);
+//         }
+
+//         savedOrder = orderRepository.save(order);
+
+//         // Attempt product stock update with retry
+//         boolean productsUpdated = updateProductStockOptimistically(updatedStock);
+//         if (!productsUpdated) {
+//             throw new RuntimeException("Product stock update failed due to concurrent modification.");
+//         }
+
+//         // Update user order history
+//         boolean userUpdated = updateUser(userId, true);
+//         if (!userUpdated) {
+//             throw new RuntimeException("User NOT Updated");
+//         }
+
+//         // Return success response
+//         Map<String, Object> response = new HashMap<>();
+//         response.put("order_id", savedOrder.getId());
+//         response.put("user_id", userId);
+//         response.put("total_price", totalPrice);
+//         response.put("status", "PLACED");
+//         response.put("items", flattenOrderItems(orderItems));
+
+//         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+//     } catch (TransactionSystemException e) {
+//         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Transaction failed and rolled back: " + e.getMessage());
+//     } catch (Exception e) {
+//         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
+//     }
+// }
+
+public boolean updateWalletOptimistically(Integer userId, Integer amount) {
+    int maxRetries = 3;
+    int attempt = 0;
+
+    while (attempt < maxRetries) {
+        boolean rowsUpdated = updateWallet(userId, amount, "debit");
+        if (rowsUpdated) {
+            return true; // Update successful
+        }
+        attempt++;
+        try {
+            Thread.sleep(50); // Short delay before retry
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return false;
+        }
+    }
+    return false; // Fail after max retries
+}
+
+public boolean updateProductStockOptimistically(Map<Integer, Integer> updatedStock) {
+    int maxRetries = 3;
+
+    for (Map.Entry<Integer, Integer> entry : updatedStock.entrySet()) {
+        int productId = entry.getKey();
+        int quantity = entry.getValue();
+        int attempt = 0;
+
+        while (attempt < maxRetries) {
+            int rowsUpdated = productsRepository.updateQuantity(productId, quantity);
+            if (rowsUpdated > 0) {
+                break; // Success
+            }
+            attempt++;
+            try {
+                Thread.sleep(50); // Small delay before retrying
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return false;
+            }
+        }
+        if (attempt == maxRetries) {
+            return false; // Fail if all retries fail
+        }
+    }
+    return true;
+}
+
+
+
 
     @Transactional
     public ResponseEntity<?> deleteAllPlaced() {
@@ -332,6 +513,7 @@ public class OrderService {
         return "User with id=" + userId + " has insufficient funds: [bill/balance] =  ["+totalPrice + "/"+balance+"]";
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private Integer getUserBalanceById(Integer user_id) {
         String url =  walletServiceUrl + "/wallets/" + user_id;
         System.out.println("CHECK URL: "+ url);
@@ -478,6 +660,7 @@ public class OrderService {
         return  "Order with id: " + id + " can't be CANCELLED with status: " + status;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean getUserById(Integer user_id, boolean discountCheck) {
         String url = accountServiceUrl + "/users/" + user_id;
         System.out.println("CHECK URL: "+ url);

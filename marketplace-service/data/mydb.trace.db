@@ -1,0 +1,243 @@
+2025-03-04 13:12:21.791903+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 13:12:23.849808+05:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 13:12:25.893313+05:30 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 13:13:12.578744+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 13:13:14.657776+05:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 13:13:16.727570+05:30 jdbc[9]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:10.848479+05:30 jdbc[103]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:13.380300+05:30 jdbc[104]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:15.479263+05:30 jdbc[105]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:17.872548+05:30 jdbc[106]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:19.957701+05:30 jdbc[107]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:22.306308+05:30 jdbc[108]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:24.383317+05:30 jdbc[109]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:26.719728+05:30 jdbc[110]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:28.787425+05:30 jdbc[111]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:51:31.063163+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:53:01.726765+05:30 jdbc[143]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:59:02.426128+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:59:04.492580+05:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 21:59:06.535295+05:30 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:03:03.378947+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:03:05.445365+05:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:03:07.491112+05:30 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:04.030834+05:30 jdbc[103]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:06.458290+05:30 jdbc[104]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:08.564743+05:30 jdbc[105]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:10.921824+05:30 jdbc[106]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:13.035459+05:30 jdbc[107]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:15.362822+05:30 jdbc[108]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:17.448996+05:30 jdbc[109]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:19.766094+05:30 jdbc[110]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:21.850738+05:30 jdbc[111]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:06:24.088781+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:07:24.057962+05:30 jdbc[139]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:28:59.122946+05:30 jdbc[23]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:01.194307+05:30 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:03.315947+05:30 jdbc[25]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:05.352037+05:30 jdbc[26]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:07.470898+05:30 jdbc[27]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:09.503653+05:30 jdbc[28]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:11.613658+05:30 jdbc[19]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:13.649374+05:30 jdbc[20]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:15.758476+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:29:17.792886+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:31:17.897451+05:30 jdbc[125]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:33:53.864933+05:30 jdbc[135]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:36:16.744029+05:30 jdbc[146]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 22:53:48.017667+05:30 database: close
+org.h2.message.DbException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.close(Store.java:374)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1292)
+	at org.h2.engine.Database.closeImpl(Database.java:1254)
+	at org.h2.engine.Database.close(Database.java:1173)
+	at org.h2.engine.Database.close(Database.java:1150)
+	at org.h2.engine.Database.removeSession(Database.java:1077)
+	at org.h2.engine.SessionLocal.close(SessionLocal.java:916)
+	at org.h2.jdbc.JdbcConnection.close(JdbcConnection.java:390)
+	at com.zaxxer.hikari.pool.PoolBase.quietlyCloseConnection(PoolBase.java:139)
+	at com.zaxxer.hikari.pool.HikariPool.lambda$closeConnection$1(HikariPool.java:435)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 14 more
+Caused by: org.h2.mvstore.MVStoreException: java.lang.AssertionError [2.3.232/3]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:926)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:463)
+	at org.h2.mvstore.RandomAccessStore.compactStore(RandomAccessStore.java:443)
+	at org.h2.mvstore.FileStore.compactStore(FileStore.java:890)
+	at org.h2.mvstore.FileStore.stop(FileStore.java:275)
+	at org.h2.mvstore.MVStore.closeStore(MVStore.java:693)
+	at org.h2.mvstore.MVStore.close(MVStore.java:643)
+	at org.h2.mvstore.db.Store.close(Store.java:364)
+	... 12 more
+Caused by: java.lang.AssertionError
+	at org.h2.mvstore.RandomAccessStore.moveChunkInside(RandomAccessStore.java:630)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:569)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:481)
+	at org.h2.mvstore.RandomAccessStore.lambda$compactMoveChunks$1(RandomAccessStore.java:468)
+	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
+	... 19 more
+2025-03-04 23:01:54.702893+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:01:56.784097+05:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:02:57.233421+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:02:59.280558+05:30 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:04:26.608632+05:30 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:10:11.595811+05:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:10:13.671047+05:30 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:10:32.350153+05:30 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "PRODUCTS"; SQL statement:
+update products p1_0 set stock_quantity=? where p1_0.id=? [50200-232]
+2025-03-04 23:14:05.834513+05:30 database: close
+org.h2.message.DbException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.close(Store.java:374)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1292)
+	at org.h2.engine.Database.closeImpl(Database.java:1254)
+	at org.h2.engine.Database.close(Database.java:1173)
+	at org.h2.engine.Database.close(Database.java:1150)
+	at org.h2.engine.Database.removeSession(Database.java:1077)
+	at org.h2.engine.SessionLocal.close(SessionLocal.java:916)
+	at org.h2.jdbc.JdbcConnection.close(JdbcConnection.java:390)
+	at com.zaxxer.hikari.pool.PoolBase.quietlyCloseConnection(PoolBase.java:139)
+	at com.zaxxer.hikari.pool.HikariPool.lambda$closeConnection$1(HikariPool.java:435)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing" [90028-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 14 more
+Caused by: org.h2.mvstore.MVStoreException: java.lang.AssertionError [2.3.232/3]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:926)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:463)
+	at org.h2.mvstore.RandomAccessStore.compactStore(RandomAccessStore.java:443)
+	at org.h2.mvstore.FileStore.compactStore(FileStore.java:890)
+	at org.h2.mvstore.FileStore.stop(FileStore.java:275)
+	at org.h2.mvstore.MVStore.closeStore(MVStore.java:693)
+	at org.h2.mvstore.MVStore.close(MVStore.java:643)
+	at org.h2.mvstore.db.Store.close(Store.java:364)
+	... 12 more
+Caused by: java.lang.AssertionError
+	at org.h2.mvstore.RandomAccessStore.moveChunkInside(RandomAccessStore.java:630)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:569)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:481)
+	at org.h2.mvstore.RandomAccessStore.lambda$compactMoveChunks$1(RandomAccessStore.java:468)
+	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
+	... 19 more

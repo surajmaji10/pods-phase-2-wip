@@ -64,6 +64,7 @@ public class ProductService {
         for(Map<String, Integer> product: products){
             Integer id = product.get("product_id");
             Integer quantity = product.get("quantity");
+            Integer version = product.get("version");
             productsRepository.updateQuantity(id, quantity);
         }
 

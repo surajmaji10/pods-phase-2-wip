@@ -17,18 +17,20 @@ import java.util.List;
 @Repository
 public interface ProductsRepository extends JpaRepository<Product, Integer> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // @Transactional
+    // @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // @QueryHints(@QueryHint(name = "javax.persistence.lock.timeout", value = "3000")) 
     @Query("SELECT p FROM Product p WHERE p.id = :id")
     List<Product> findByUserId(@Param("id") Integer id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // @Transactional
+    // @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // @QueryHints(@QueryHint(name = "javax.persistence.lock.timeout", value = "3000")) 
     @Query("SELECT p FROM Product p WHERE p.id = :id")
     List<Product> findProductByIdIs(@Param("id") Integer id);
 
-    @Transactional
+    // @Transactional
     @Modifying
-    @QueryHints(@QueryHint(name = "javax.persistence.lock.timeout", value = "5000"))
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("UPDATE Product p SET p.stock_quantity=:quantity WHERE p.id=:id")
+    @Query("UPDATE Product p SET p.stock_quantity = :quantity WHERE p.id = :id")
     Integer updateQuantity(@Param("id") Integer id, @Param("quantity") Integer quantity);
 }
