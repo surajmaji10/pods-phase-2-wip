@@ -1,6 +1,8 @@
 package pods.project.marketplaceservice.services;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -38,12 +40,14 @@ public class ProductService {
         this.restTemplate = new RestTemplate();
     }
 
+    @Transactional
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = new ArrayList<>();
         products = productsRepository.findAll();
         return  ResponseEntity.ok().body(products);
     }
 
+    @Transactional
     public ResponseEntity<?> getProductById(Integer id) {
         List<Product> products = productsRepository.findProductByIdIs(id);
         if(products.isEmpty()){
@@ -52,6 +56,7 @@ public class ProductService {
         return  ResponseEntity.ok().body(products.get(0));
     }
 
+    @Transactional
     public ResponseEntity<?> updateProducts(Map<String, Object> request) {
         String order_id = request.get("order_id").toString();
         List<Map<String, Integer>> products = (List<Map<String, Integer>>) request.get("products");

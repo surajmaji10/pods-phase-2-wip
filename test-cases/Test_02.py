@@ -71,7 +71,7 @@ def add_money_and_check_detail(id, name, email, productId, walletAmount):
         # Place an order in the marketplace  
         new_order = {"items": [{"product_id": productId, "quantity": 2}], "user_id": new_userid}  
         res = requests.post(marketplaceServiceURL + "/orders", json=new_order)  
-        print(res.text)
+        print(res, res.text)
 
         # Get product details after placing the order  
         product_details_after_ordering = get_product_details(productId)  
@@ -79,9 +79,14 @@ def add_money_and_check_detail(id, name, email, productId, walletAmount):
         # Get the wallet balance after placing the order  
         new_wallet_balance = get_wallet(new_userid).json()['balance']  
 
-        print("balances: ",old_wallet_balance, new_wallet_balance)
-
+        print("Balances: ",old_wallet_balance, new_wallet_balance)
+        print(old_wallet_balance - new_wallet_balance == (product_details_after_ordering.json()['price'] * 2) * 0.9)
+        print((product_details_before_ordering.json()['stock_quantity'] - product_details_after_ordering.json()['stock_quantity'] == 2))
         # Check for the correct balance amount in the wallet and the correct quantity  
+        
+        print("Product details before ordering: ", product_details_before_ordering.json())
+        print("Product details after ordering: ", product_details_after_ordering.json())
+        
         if (old_wallet_balance - new_wallet_balance == (product_details_after_ordering.json()['price'] * 2) * 0.9) and \
            (product_details_before_ordering.json()['stock_quantity'] - product_details_after_ordering.json()['stock_quantity'] == 2):  
             print("Test Passed")  

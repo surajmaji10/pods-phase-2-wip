@@ -201,6 +201,9 @@ public class OrderService {
         // update user's wallet
         System.out.println("NEW BAL is " + (totalPrice));
         boolean updatedWallet = updateWallet(user_id, totalPrice, "debit");
+        if(!updatedWallet){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wallet NOT Updated");
+        }
 
         // order can be placed
         order.setItems(orderItems);
@@ -212,8 +215,14 @@ public class OrderService {
 
         // update the user too
         boolean userUpdated =  updateUser(user_id, true);
+        if(!userUpdated){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User NOT Updated");
+        }
 
         boolean updatedProducts =  updateProducts(savedOrder.getId(), productsQuantityList);
+        if(!updatedProducts){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Products NOT Updated");
+        }
 
         if(updatedWallet && userUpdated && updatedProducts){
             Map<String,Object> map = new HashMap<>();
@@ -225,8 +234,8 @@ public class OrderService {
             System.out.printf(map.toString());
             return ResponseEntity.status(HttpStatus.CREATED).body(map);
         }
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internel Error! This is on us.");
+        assert(savedOrder != null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order NOT Placed");
     }
 
     @Transactional
@@ -393,6 +402,7 @@ public class OrderService {
 
     private boolean updateProducts(Integer order_id, List<Map<String, Integer>> discountAvailed) {
         String url = marketplaceServiceUrl + "/products";
+        System.out.println("CHECK URL: "+ url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -401,6 +411,8 @@ public class OrderService {
         Map<String, Object> body = new HashMap<>();
         body.put("order_id", order_id);
         body.put("products", discountAvailed);
+
+        System.out.println(body.toString());
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
@@ -412,7 +424,7 @@ public class OrderService {
             }
             return false;
         } catch (RestClientException e) {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR:" + e.getMessage());
             return false;
         }
 
