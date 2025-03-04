@@ -56,6 +56,9 @@ for SERVICE in "${SERVICES[@]}"; do
     cd ..
     echo
 done
+cd "marketplace-service" || exit
+kubectl apply -f hpa.yaml
+cd ..
 
 
 # Verify pods
