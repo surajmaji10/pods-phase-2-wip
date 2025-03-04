@@ -59,8 +59,8 @@ def place_order_thread(user_id, product_id, attempts=5):
 def main():
     try:
         # 2) Create user (large enough balance so they can buy many items)
-        user_id = 1001
-        resp = post_user(user_id, "Bobby Market", "bobby@market.com")
+        user_id = 4321
+        resp = post_user(user_id, "Akash Maji", "akash@market.com")
         if not check_response_status_code(resp, 201):
             return False
 
