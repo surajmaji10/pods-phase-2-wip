@@ -99,8 +99,8 @@ def main():
 
             resp = get_wallet(user_id)
             expected_balance = resp.json()["balance"]
-            print(f"User {user_id}: \nExpected Balance = {final_expected_balance}")
-            print(f"API Response: {expected_balance}")
+            # print(f"User {user_id}: \nExpected Balance = {final_expected_balance}")
+            # print(f"API Response: {expected_balance}")
             print(expected_balance == final_expected_balance)
             # if not test_get_wallet(user_id, resp, expected_balance=final_expected_balance):
             #     return False

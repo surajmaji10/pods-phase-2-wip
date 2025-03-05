@@ -66,7 +66,7 @@ def main():
         # Final check of the wallet
         final_expected_balance = initial_balance + credited_amount - debited_amount
         resp = get_wallet(user_id)
-        if not test_get_wallet(user_id, resp, expected_balance=final_expected_balance):
+        if not test_get_wallet(user_id, resp, final_expected_balance):
             return False
 
         print_pass_message("Wallet concurrency test passed.")

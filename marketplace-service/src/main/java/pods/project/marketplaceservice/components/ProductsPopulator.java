@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import pods.project.marketplaceservice.entities.Product;
 import pods.project.marketplaceservice.repositories.ProductsRepository;
@@ -14,6 +15,7 @@ import pods.project.marketplaceservice.repositories.ProductsRepository;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 @Component
@@ -30,8 +32,10 @@ public class ProductsPopulator {
     @PostConstruct
     public void processExcelFile() {
 
-        try (FileInputStream fileInputStream = new FileInputStream("src/main/resources/static/products.xlsx")) {
-            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+        ClassPathResource resource = new ClassPathResource("products.xlsx");
+        
+        try (InputStream inputStream = resource.getInputStream();
+             XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
             XSSFSheet sheet = workbook.getSheetAt(0);
 
             // Skip header row
