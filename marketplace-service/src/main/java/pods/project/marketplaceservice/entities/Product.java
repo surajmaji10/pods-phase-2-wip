@@ -25,6 +25,7 @@ public class Product {
 
     @Column(name = "stock_quantity")
     Integer stock_quantity;
+    
 
     @Version
     Integer version;

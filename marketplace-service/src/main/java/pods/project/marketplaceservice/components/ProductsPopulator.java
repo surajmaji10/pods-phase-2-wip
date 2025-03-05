@@ -49,8 +49,9 @@ public class ProductsPopulator {
 
 
                 // Convert Excel model to Product entity
-                Product product = new Product();
-//                System.out.println(Integer.parseInt(idCell.getStringCellValue()));
+                Integer id = (int)(idCell.getNumericCellValue());
+                Product product = productsRepository.findById(id).orElse(new Product());
+                //  System.out.println(Integer.parseInt(idCell.getStringCellValue()));
                 product.setId((int)(idCell.getNumericCellValue()));
                 product.setName(nameCell.getStringCellValue());
                 product.setDescription(descriptionCell.getStringCellValue());
