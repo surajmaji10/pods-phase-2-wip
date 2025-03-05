@@ -1,21 +1,33 @@
-# Use Eclipse Temurin JDK 21 as the base image
-FROM eclipse-temurin:21
+# Stage 1: Build
+FROM eclipse-temurin:21 AS build
 
-# Set working directory inside the container
 WORKDIR /app
 
 # Install Maven
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
-# Copy source code into the container
-COPY . /app
+# Copy only the POM file first to cache dependencies
+COPY pom.xml ./
 
-# Run Maven build (clean & package)
+# Download dependencies (this will be cached unless pom.xml changes)
+RUN mvn dependency:go-offline
+
+# Copy the rest of the source code
+COPY src ./src
+
+# Build the application (skip tests for faster build)
 RUN mvn clean package -DskipTests
+
+# Stage 2: Run
+FROM eclipse-temurin:21
+
+WORKDIR /app
+
+# Copy the built JAR from the build stage, keeping the original name
+COPY --from=build /app/target/marketplace-service-0.0.1-SNAPSHOT.jar /app/
 
 # Expose application port
 EXPOSE 8080
 
-# Use ENTRYPOINT for better control of the command execution
-ENTRYPOINT ["java", "-jar", "/app/target/marketplace-service-0.0.1-SNAPSHOT.jar"]
-
+# Run the application with the original JAR name
+ENTRYPOINT ["java", "-jar", "/app/marketplace-service-0.0.1-SNAPSHOT.jar"]

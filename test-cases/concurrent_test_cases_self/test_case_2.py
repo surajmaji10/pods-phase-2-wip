@@ -81,8 +81,8 @@ def main():
         global successful_orders
         successful_orders = 0  # reset global
 
-        thread_count = 20
-        attempts_per_thread = 3  # total = 15 attempts, but stock is only 10
+        thread_count = 100
+        attempts_per_thread = 5  # total = 15 attempts, but stock is only 10
         threads = []
 
         for i in range(thread_count):
